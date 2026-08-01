@@ -601,7 +601,7 @@ export default function ProductsClient({ initialProducts = [], district = null, 
                                             onClick={() => {
                                               const targetUrl = district
                                                 ? `/${district}/items/${product.slug}`
-                                                : `/items/${product.slug}`;
+                                                : `/products/${product.slug}`;
                                               router.push(targetUrl);
                                             }}
                                           >

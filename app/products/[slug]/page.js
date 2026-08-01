@@ -12,7 +12,7 @@ export async function generateMetadata({ params }) {
 
     const description = `Buy ${productName} at best price in India. Trusted supplier, dealer and distributor of ${productName} for hospitals, laboratories, diagnostic centers, research institutes and healthcare facilities. Contact Global Biomedical for latest quotation and product details.`;
 
-    const url = `https://globalbiomedical.org/items/${slug}`;
+    const url = `https://globalbiomedical.org/products/${slug}`;
 
     return {
         title,
@@ -78,10 +78,38 @@ export async function generateMetadata({ params }) {
     };
 }
 
-export default async function Page({ params }) {
-    const { slug } = await params;
-    const allProducts = await fetchFullCatalog();
-    const product = allProducts.find((p) => p.slug === slug) || null;
+// export default async function Page({ params }) {
+//     const { slug } = await params;
+//     const allProducts = await fetchFullCatalog();
+//     const product = allProducts.find((p) => p.slug === slug) || null;
 
-    return <ProductDetails slug={slug} product={product} />;
+//     return <ProductDetails slug={slug} product={product} />;
+// }
+
+export default async function Page({ params }) {
+  const { slug } = await params;
+
+  const allProducts = await fetchFullCatalog();
+
+  console.log("Total Products:", allProducts.length);
+  console.log("Requested Slug:", slug);
+
+  const product = allProducts.find((p) => p.slug === slug);
+
+  console.log("Found Product:", product);
+
+  if (!product) {
+    console.log(
+      "Matching slugs:",
+      allProducts
+        .filter((p) => p.title?.toLowerCase().includes("hd"))
+        .slice(0, 10)
+        .map((p) => ({
+          title: p.title,
+          slug: p.slug,
+        }))
+    );
+  }
+
+  return <ProductDetails slug={slug} product={product} />;
 }

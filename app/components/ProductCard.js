@@ -58,7 +58,7 @@ const ProductCard = React.memo(function ProductCard({ product, district }) {
             href={
               district
                 ? `/${district}/items/${product.slug}`
-                : `/items/${product.slug}`
+                : `/products/${product.slug}`
             }
             className="px-8 py-4 rounded-2xl bg-sky-700 !text-white font-semibold hover:bg-sky-800 transition"
           >

@@ -134,7 +134,7 @@ ${product.price || "Contact for Price"}
 
 Product URL:
 
-${DOMAIN}/items/${product.slug || product.id}
+${DOMAIN}/products/${product.slug || product.id}
 
 
 

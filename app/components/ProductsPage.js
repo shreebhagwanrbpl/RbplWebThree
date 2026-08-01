@@ -587,11 +587,8 @@ export default function Products({ city }) {
   const viewDetails = (item) => {
 
     router.push(
-
       citySlug
-
         ? `/${citySlug}/products/${item.slug}`
-
         : `/products/${item.slug}`
 
     );
