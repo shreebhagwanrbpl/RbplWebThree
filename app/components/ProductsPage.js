@@ -553,15 +553,12 @@ export default function Products({ city }) {
   }, [
 
     categories,
-
     activeCategory
 
   ]);
 
   useEffect(() => {
-
     const handleScroll = () => {
-
       if (window.scrollY > 400) {
         setShowTopBtn(true);
       } else {
@@ -571,7 +568,6 @@ export default function Products({ city }) {
     };
 
     window.addEventListener("scroll", handleScroll);
-
     return () =>
       window.removeEventListener(
         "scroll",
@@ -583,19 +579,13 @@ export default function Products({ city }) {
   /* -----------------------------
       VIEW DETAILS
   ------------------------------ */
-
   const viewDetails = (item) => {
-
     router.push(
       citySlug
         ? `/${citySlug}/products/${item.slug}`
         : `/products/${item.slug}`
-
     );
-
   };
-
-
 
   /* -----------------------------
       RESET
