@@ -9,17 +9,17 @@ export async function generateMetadata({ params }) {
     .replace(/-/g, " ")
     .replace(/\b\w/g, (char) => char.toUpperCase());
 
-  const url = `https://humanbiomedical.in/${district}/about`;
+  const url = `https://globalbiomedicals.in/${district}/about`;
 
   return {
-    title: `About Human Biomedical | Laboratory Equipment & Biomedical Equipment Supplier in ${city}`,
+    title: `About Global Biomedical | Laboratory Equipment & Biomedical Equipment Supplier in ${city}`,
 
     description:
-      `Human Biomedical is a leading supplier of laboratory equipment, biomedical instruments, diagnostic analyzers, laboratory consumables, hospital equipment, and healthcare solutions in ${city}. Learn about our expertise, quality products, and trusted support.`,
+      `Global Biomedical is a leading supplier of laboratory equipment, biomedical instruments, diagnostic analyzers, laboratory consumables, hospital equipment, and healthcare solutions in ${city}. Learn about our expertise, quality products, and trusted support.`,
 
     keywords: [
-      `Human Biomedical ${city}`,
-      `About Human Biomedical`,
+      `Global Biomedical ${city}`,
+      `About Global Biomedical`,
       `Laboratory Equipment Supplier ${city}`,
       `Biomedical Equipment Supplier ${city}`,
       `Medical Equipment Supplier ${city}`,
@@ -44,11 +44,11 @@ export async function generateMetadata({ params }) {
     },
 
     openGraph: {
-      title: `About Human Biomedical | Laboratory Equipment Supplier in ${city}`,
+      title: `About Global Biomedical | Laboratory Equipment Supplier in ${city}`,
       description:
         `Trusted supplier of laboratory equipment, biomedical instruments, and diagnostic analyzers in ${city}.`,
       url,
-      siteName: "Human Biomedical",
+      siteName: "Global Biomedical",
       locale: "en_IN",
       type: "website",
       images: [
@@ -56,14 +56,14 @@ export async function generateMetadata({ params }) {
           url: "/og-image.jpg",
           width: 1200,
           height: 630,
-          alt: `Human Biomedical ${city}`,
+          alt: `Global Biomedical ${city}`,
         },
       ],
     },
 
     twitter: {
       card: "summary_large_image",
-      title: `About Human Biomedical | ${city}`,
+      title: `About Global Biomedical | ${city}`,
       description:
         `Trusted laboratory equipment and biomedical equipment supplier in ${city}.`,
       images: ["/og-image.jpg"],

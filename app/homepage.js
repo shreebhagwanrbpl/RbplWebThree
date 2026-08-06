@@ -1,7 +1,12 @@
 "use client";
 import Hero from "./components/Hero";
 import { useEffect, useState } from "react";
-import { doc, getDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  collection,
+  getDocs,
+} from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import Link from "next/link";
 
@@ -63,6 +68,7 @@ export const metadata = {
 export default function Home({ city }) {
   const [services, setServices] = useState([]);
   const [products, setProducts] = useState([]);
+  const [loadingProducts, setLoadingProducts] = useState(true);
   // current city
   const currentCity = city || "";
 
@@ -80,19 +86,84 @@ export default function Home({ city }) {
 
   const cityName = formatCity(currentCity);
   useEffect(() => {
-    const fetchData = async () => {
-      const snap = await getDoc(
-        doc(db, "websites", "globalbiomedicalsin", "pages", "products")
-      );
+    const fetchProducts = async () => {
+      try {
+        let allProducts = [];
 
-      if (snap.exists()) {
-        const data = snap.data().products || [];
-        const visible = data.filter((p) => p.isPublished !== false);
-        setProducts(visible);
+        // Category Products
+        const categorySnap = await getDocs(
+          collection(
+            db,
+            "websites",
+            "globalbiomedicalsin",
+            "pages",
+            "categoryproducts",
+            "categories"
+          )
+        );
+
+        for (const categoryDoc of categorySnap.docs) {
+          const categoryData = categoryDoc.data();
+
+          // Direct category products
+          if (Array.isArray(categoryData.products)) {
+            allProducts.push(
+              ...categoryData.products.filter(
+                (p) => p.isPublished !== false
+              )
+            );
+          }
+
+          // Subcategory products
+          const subSnap = await getDocs(
+            collection(categoryDoc.ref, "subcategories")
+          );
+
+          subSnap.forEach((subDoc) => {
+            const subData = subDoc.data();
+
+            if (Array.isArray(subData.products)) {
+              allProducts.push(
+                ...subData.products.filter(
+                  (p) => p.isPublished !== false
+                )
+              );
+            }
+          });
+        }
+
+        // Agar category products mil gaye
+        if (allProducts.length > 0) {
+          setProducts(allProducts);
+          setLoadingProducts(false);
+          return;
+        }
+        // Fallback → Old products document
+        const oldSnap = await getDoc(
+          doc(
+            db,
+            "websites",
+            "globalbiomedicalsin",
+            "pages",
+            "products"
+          )
+        );
+
+        if (oldSnap.exists()) {
+          const data = oldSnap.data().products || [];
+
+          setProducts(
+            data.filter((p) => p.isPublished !== false)
+          );
+
+          setLoadingProducts(false);
+        }
+      } catch (err) {
+        console.error(err);
       }
     };
 
-    fetchData();
+    fetchProducts();
   }, []);
 
   useEffect(() => {
@@ -125,9 +196,9 @@ export default function Home({ city }) {
       <section className="py-5 bg-light">
         <div className="container text-center">
           <h2 className="fw-bold mb-5">
-              Laboratory Equipment &
-              Diagnostic Services
-            </h2>
+            Laboratory Equipment &
+            Diagnostic Services
+          </h2>
 
           <div className="row g-4">
             {services.length === 0 ? (
@@ -165,67 +236,106 @@ export default function Home({ city }) {
 
           <div className="row g-4">
 
-            {products.slice(0, 4).map((item, i) => (
-              <div className="col-12 col-sm-6 col-md-3" key={item.id || i}>
-
-                <div className="product-card-pro">
-
-                  <div className="product-img-pro">
-                    <img 
-                    src={item.image 
-                    || 
-                    "/no-image.png"}
-                      loading="lazy"
+            {loadingProducts ? (
+              [...Array(4)].map((_, i) => (
+                <div className="col-12 col-sm-6 col-md-3" key={i}>
+                  <div className="product-card-pro">
+                    <div
+                      style={{
+                        height: 260,
+                        background: "#f1f1f1",
+                        borderRadius: 12,
+                      }}
                     />
+                    <div className="p-3">
+                      <div
+                        style={{
+                          height: 20,
+                          background: "#f1f1f1",
+                          borderRadius: 5,
+                          marginBottom: 10,
+                        }}
+                      />
+                      <div
+                        style={{
+                          height: 15,
+                          background: "#f1f1f1",
+                          borderRadius: 5,
+                          width: "70%",
+                        }}
+                      />
+                    </div>
                   </div>
+                </div>
+              ))
+            ) : (
+              products.slice(0, 4).map((item, i) => (
+                <div className="col-12 col-sm-6 col-md-3" key={item.id || i}>
 
-                  <div className="product-body text-start">
+                  <div className="product-card-pro">
 
-                    <h6>{item.title}</h6>
-
-                    <div className="meta">
-                      <span>{item.brand || "-"}</span>
-                      <span>{item.size || "-"}</span>
-                      <span>{item.usage || "-"}</span>
+                    <div className="product-img-pro">
+                      <img
+                        src={
+                          item.images?.[0] ||
+                          item.image ||
+                          "/no-image.png"
+                        }
+                        loading="lazy"
+                        alt={item.title}
+                        onError={(e) => {
+                          e.currentTarget.src = "/no-image.png";
+                        }}
+                      />
                     </div>
 
-                    <Link
-                      href={citySlug ? `/${citySlug}/products` : "/products"}
-                    >
-                      <button className="btn btn-success w-100 mt-3">
-                        View Details
-                      </button>
-                    </Link>
+                    <div className="product-body text-start">
+
+                      <h6>{item.title}</h6>
+
+                      <div className="meta">
+                        <span>{item.brand || "-"}</span>
+                        <span>{item.size || "-"}</span>
+                        <span>{item.usage || "-"}</span>
+                      </div>
+
+                      <Link
+                        href={citySlug ? `/${citySlug}/products` : "/products"}
+                      >
+                        <button className="btn btn-success w-100 mt-3">
+                          View Details
+                        </button>
+                      </Link>
+
+                    </div>
 
                   </div>
 
                 </div>
-
-              </div>
-            ))}
+              ))
+            )}
 
           </div>
-
         </div>
       </section>
 
       <div className="d-none">
-  <h2>
-    Laboratory Equipment Supplier
-    in India
-  </h2>
+        <h2>
+          Laboratory Equipment Supplier
+          in India
+        </h2>
 
-  <p>
-    Global Biomedicals is a trusted
-    supplier of laboratory
-    equipment, diagnostic
-    instruments, biomedical
-    products, pathology machines,
-    laboratory consumables and
-    hospital equipment across
-    India.
-  </p>
-</div>
+        <p>
+          Global Biomedicals is a trusted
+          supplier of laboratory
+          equipment, diagnostic
+          instruments, biomedical
+          products, pathology machines,
+          laboratory consumables and
+          hospital equipment across
+          India.
+        </p>
+      </div>
 
 
       {/* WHY CHOOSE US */}
@@ -237,7 +347,7 @@ export default function Home({ city }) {
       <div className="col-lg-6" data-aos="fade-right">
 
         <h2 className="fw-bold mb-4 display-5">
-          Why Choose <span style={{color:"#198754"}}>Raj Biosis?</span>
+          Why Choose <span style={{color:"#198754"}}>Global Biomedical?</span>
         </h2>
 
         <p className="text-muted fs-5">

@@ -7,6 +7,9 @@ export default async function ProductsPage({ district = null, city = null }) {
   // Fetch full catalog from server cache
   const allProducts = await fetchFullCatalog();
 
+
+  console.log("SERVER PRODUCTS:", allProducts.length);
+
   return (
     <ProductsClient
       initialProducts={allProducts}
@@ -14,4 +17,5 @@ export default async function ProductsPage({ district = null, city = null }) {
       city={city}
     />
   );
+
 }

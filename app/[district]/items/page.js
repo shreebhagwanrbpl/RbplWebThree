@@ -9,13 +9,13 @@ export async function generateMetadata({ params }) {
     .replace(/-/g, " ")
     .replace(/\b\w/g, (char) => char.toUpperCase());
 
-  const url = `https://humanbiomedical.in/${district}/products`;
+  const url = `https://globalbiomedicals.in/${district}/products`;
 
   return {
-    title: `Laboratory Equipment, Biomedical Products & Diagnostic Instruments in ${city} | Human Biomedical`,
+    title: `Laboratory Equipment, Biomedical Products & Diagnostic Instruments in ${city} | Global Biomedical`,
 
     description:
-      `Human Biomedical supplies premium laboratory equipment, biomedical instruments, electrolyte analyzers, diagnostic devices, laboratory reagents, medical equipment, hospital equipment, and laboratory consumables in ${city}. Trusted by hospitals, pathology labs, diagnostic centres, and research laboratories.`,
+      `Global Biomedical supplies premium laboratory equipment, biomedical instruments, electrolyte analyzers, diagnostic devices, laboratory reagents, medical equipment, hospital equipment, and laboratory consumables in ${city}. Trusted by hospitals, pathology labs, diagnostic centres, and research laboratories.`,
 
     keywords: [
       `Laboratory Equipment ${city}`,
@@ -36,8 +36,8 @@ export async function generateMetadata({ params }) {
       `Medical Devices ${city}`,
       `Healthcare Equipment ${city}`,
       `Lab Equipment Dealer ${city}`,
-      `Human Biomedical ${city}`,
-      `Human Biomedical Products`,
+      `Global Biomedical ${city}`,
+      `Global Biomedical Products`,
     ],
 
     alternates: {
@@ -45,11 +45,11 @@ export async function generateMetadata({ params }) {
     },
 
     openGraph: {
-      title: `Laboratory Equipment & Biomedical Products in ${city} | Human Biomedical`,
+      title: `Laboratory Equipment & Biomedical Products in ${city} | Global Biomedical`,
       description:
         `Browse premium laboratory equipment, diagnostic analyzers, biomedical instruments, laboratory reagents, and hospital equipment in ${city}.`,
       url,
-      siteName: "Human Biomedical",
+      siteName: "Global Biomedical",
       locale: "en_IN",
       type: "website",
       images: [
@@ -57,14 +57,14 @@ export async function generateMetadata({ params }) {
           url: "/og-image.jpg",
           width: 1200,
           height: 630,
-          alt: `Human Biomedical Products ${city}`,
+          alt: `Global Biomedical Products ${city}`,
         },
       ],
     },
 
     twitter: {
       card: "summary_large_image",
-      title: `Biomedical Products in ${city} | Human Biomedical`,
+      title: `Biomedical Products in ${city} | Global Biomedical`,
       description:
         `Trusted supplier of laboratory equipment, analyzers, biomedical instruments, and reagents in ${city}.`,
       images: ["/og-image.jpg"],

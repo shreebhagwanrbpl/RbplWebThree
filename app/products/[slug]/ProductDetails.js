@@ -656,10 +656,14 @@ export default function ProductDetails({ slug, product: initialProduct }) {
                 </div>
 
                 {/* SEO CONTENT SECTION */}
-                <div className="seo-content mt-5">
+                <section className="seo-content">
                     <h2>
-                        {product.title} Supplier, Manufacturer & Exporter in {cityName}
+                        {product.title}
                     </h2>
+
+                    <p className="seo-subtitle">
+                        Trusted Supplier, Manufacturer & Exporter in {cityName}
+                    </p>
 
                     <p>
                         Looking for the best {product.title} in {cityName}? We are a trusted
@@ -812,7 +816,8 @@ export default function ProductDetails({ slug, product: initialProduct }) {
                             </p>
                         </div>
                     </div>
-                </div>
+                </section>
+
             </div>
         </>
     );

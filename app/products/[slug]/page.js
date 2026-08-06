@@ -87,29 +87,29 @@ export async function generateMetadata({ params }) {
 // }
 
 export default async function Page({ params }) {
-  const { slug } = await params;
+    const { slug } = await params;
 
-  const allProducts = await fetchFullCatalog();
+    const allProducts = await fetchFullCatalog();
 
-  console.log("Total Products:", allProducts.length);
-  console.log("Requested Slug:", slug);
+    console.log("Total Products:", allProducts.length);
+    console.log("Requested Slug:", slug);
 
-  const product = allProducts.find((p) => p.slug === slug);
+    const product = allProducts.find((p) => p.slug === slug);
 
-  console.log("Found Product:", product);
+    console.log("Found Product:", product);
 
-  if (!product) {
-    console.log(
-      "Matching slugs:",
-      allProducts
-        .filter((p) => p.title?.toLowerCase().includes("hd"))
-        .slice(0, 10)
-        .map((p) => ({
-          title: p.title,
-          slug: p.slug,
-        }))
-    );
-  }
+    if (!product) {
+        console.log(
+            "Matching slugs:",
+            allProducts
+                .filter((p) => p.title?.toLowerCase().includes("hd"))
+                .slice(0, 10)
+                .map((p) => ({
+                    title: p.title,
+                    slug: p.slug,
+                }))
+        );
+    }
 
-  return <ProductDetails slug={slug} product={product} />;
+    return <ProductDetails slug={slug} product={product} />;
 }
